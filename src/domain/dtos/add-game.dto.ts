@@ -18,7 +18,7 @@ export class AddGameDto{
     static create ( object: {[key:string]: any} ): [string?, AddGameDto?]{
 
         const { titulo, lanzamiento, plataformas, generos, desarrolladoras, editoras, tiendas, etiquetas, backgroundImage} = object;
-        // console.log(object);
+        console.log(object);
         if ( !titulo ) return ['Missing Titulo'];
         if ( !lanzamiento ) return ['Missing Lanzamiento'];
         if ( !plataformas ) return ['Missing Plataformas'];

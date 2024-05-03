@@ -1,6 +1,6 @@
 import { error } from "console";
 import { GameModel } from "../../data/mongodb/models/game.model";
-import { AddGameDto, CustomError, GameDatasource, GameEntity } from "../../domain";
+import { AddGameDto, ComprobeGameDto, CustomError, GameDatasource, GameEntity } from "../../domain";
 import { GameMapper } from "../mappers/game.mapper";
 
 
@@ -41,5 +41,24 @@ export class GameDatasourceImpl implements GameDatasource{
            
             
         }
+    }
+    
+    async comprobeGame(comprobeGameDto: ComprobeGameDto): Promise<Boolean> {
+
+        const { titulo } = comprobeGameDto;
+
+        try {
+            const exist = await GameModel.findOne( { titulo });
+            if ( !exist ) return false;
+            return true;
+        } catch (error) {
+            console.log(error);
+            if ( error instanceof CustomError ){
+                throw error;
+            }
+            throw CustomError.internalServer();
+        }
+
+        
     }
 }

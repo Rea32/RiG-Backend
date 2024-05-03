@@ -1,4 +1,4 @@
-import { AddGameDto, GameDatasource, GameEntity, GameRepository } from "../../domain";
+import { AddGameDto, ComprobeGameDto, GameDatasource, GameEntity, GameRepository } from "../../domain";
 
 
 
@@ -10,5 +10,8 @@ export class GameRepositoryImpl implements GameRepository{
 
     addGame(addGameDto: AddGameDto): Promise<GameEntity> {
         return this.gameDatasource.addGame( addGameDto );
+    }
+    comprobeGame(comprobeGameDto: ComprobeGameDto): Promise<Boolean> {
+        return this.gameDatasource.comprobeGame( comprobeGameDto );
     }
 }
