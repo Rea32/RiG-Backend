@@ -1,5 +1,5 @@
-import { AddGameDto } from "../dtos/add-game.dto";
-import { GameRepository } from "../repositories/game.repository";
+import { AddGameDto } from "../../dtos/game/add-game.dto";
+import { GameRepository } from "../../repositories/game.repository";
 
 
 export class AddGame {
@@ -10,9 +10,7 @@ export class AddGame {
     async execute ( addGameDto: AddGameDto ): Promise<any>{
 
         const game = await this.gameRepository.addGame(addGameDto);
-        return{
-            game
-        }
+        return { game }
 
     }
 }

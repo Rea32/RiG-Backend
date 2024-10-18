@@ -1,6 +1,6 @@
 
-import { GetGenreDto } from "../dtos/get-genre.dto";
-import { GenreRepository } from "../repositories/genre.repository";
+import { GetGenreDto } from "../../dtos/genre/get-genre.dto";
+import { GenreRepository } from "../../repositories/genre.repository";
 
 
 export class GetGenre {
@@ -11,9 +11,8 @@ export class GetGenre {
     async execute ( getGenreDto: GetGenreDto ): Promise<any>{
 
         const genre = await this.genreRepository.getGenre(getGenreDto);
-        return{
-            genre
-        }
+        return genre
+        
 
     }
 }

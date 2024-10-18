@@ -1,51 +1,35 @@
-import { Schema } from "mongoose";
+import { Schema, Types } from "mongoose";
 
 const mongoose = require('mongoose');
 
-const plataformasSchema = new Schema({
-    _id:mongoose.ObjectId,
-    id: Number,
-    name: {
-        type:String,
-        alias: 'nombre'
+
+const sagaSchema = new Schema({
+    id:{
+        type: Number,
+        required:[ true,'El id es necesario']
     },
-});
-
-const gameSchema = new Schema({
-
-    titulo:{
+    nombre:{
         type: String,
-        required:[ true,'El titulo es necesario']
+        required:[ true,'El nombre es necesario']
     },
-    lanzamiento:{
-        type: Date,
-        required:[ true, 'El lanzamiento es necesario']
+    generos_principales:{
+        type: [Types.ObjectId],
+        ref: 'Genero'
     },
-    plataformas:{
-        type: [plataformasSchema],
-        required:[ true, 'Es necesario al menos una plataforma']
+    juegos_principales:{
+        type: [Types.ObjectId],
+        ref: 'Game'
     },
-    generos:{
-        type: Array,
-        required:[ true, 'Es necesario al menos un genero']
-    },
-    desarrolladoras:{
-        type: Array,
-        required:[ true, 'Es necesario al menos una desarrolladora']
-    },
-    editoras:{
-        type: Array,
-        required:[ true, 'Es necesario al menos una editora']
-    },
-    tiendas:{
-        type: Array
-    },
-    etiquetas:{
-        type: Array
+    spin_offs:{
+        type: [Types.ObjectId],
+        ref: 'Game'
     },
     backgroundImage:{
+        type: String,
+    },
+    key_name:{
         type: String,
     }
 })
 
-export const GameModel = mongoose.model('Game', gameSchema);
+export const SagaModel = mongoose.model('Saga', sagaSchema);

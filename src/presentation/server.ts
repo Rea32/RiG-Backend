@@ -21,13 +21,20 @@ export class Server {
 
     async start(){
 
-        this.app.use( express.json());
+        this.app.use( express.json({ limit: '50mb' }));
         this.app.use( express.urlencoded({extended:true}));
         this.app.use(cors());
         this.app.use( this.routes ); 
         
-        this.app.listen( this.port, () =>{
-            console.log(`Server running on port ${ this.port }`)
-        });
+        // this.app.listen( this.port, () =>{
+        //     console.log(`Server running on port ${ this.port }`)
+        // });
+            // Iniciar el servidor y escuchar en el puerto especificado
+    this.app.listen(this.port, '0.0.0.0', () => {
+        console.log(`Server running on port ${this.port}`);
+      });
+    //   this.app.get('/', (req,res)=>{
+    //     res.send("Hello World")
+    //   })
     }
 }

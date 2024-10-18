@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 
 
 
@@ -9,8 +10,8 @@ export class GenreEntity {
         public slug?: string,
         public parent?: boolean,
         public games_count?: number,
-        public important_games?: string[],
-        public sub_genres?: string[],
+        public importants_games?: string[],
+        public sub_genres?: [Types.ObjectId],
         public description?: string,
 
     ){}

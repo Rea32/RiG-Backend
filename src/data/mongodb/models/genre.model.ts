@@ -1,15 +1,8 @@
-import { Schema } from "mongoose";
+import { Schema, Types } from "mongoose";
 
 const mongoose = require('mongoose');
 
-const plataformasSchema = new Schema({
-    _id:mongoose.ObjectId,
-    id: Number,
-    name: {
-        type:String,
-        alias: 'nombre'
-    },
-});
+
 
 const genreSchema = new Schema({
     id:{
@@ -29,12 +22,13 @@ const genreSchema = new Schema({
     games_count:{
         type: Number,
     },
-    important_games:{
+    importants_games:{
         type: Array,
     },
-    sub_genres:{
-        type: Array,
-    },
+    sub_genres:[{
+        type: Types.ObjectId,
+        ref: 'Genero',
+    }],
     description:{
         type: String
     },

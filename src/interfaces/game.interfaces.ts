@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose"
+
 export interface desarrolladora{
 
     id: number,
@@ -14,10 +16,16 @@ export interface editora{
     
 }
 
-export interface plataformas{
-    
+export interface basicInterface{
     id: number,
     nombre: string,
+    img_background?: string
+}
+
+export interface plataformas{
+    
+    _id: ObjectId,
+    name: string,
     
 }
 
@@ -26,12 +34,31 @@ export interface tiendas {
     nombre: string
 };
 
-export interface genero {
+export interface generos {
     id: number,
+    name: string
+};
+
+export interface generos_id {
+    _id: ObjectId,
+    name: string
+};
+
+
+export interface mecanicas {
+    _id: ObjectId,
     nombre: string
 };
 
 export interface etiquetas {
-    id: number,
-    nombre: string
+    name: string,
+    nombre: string,
+    tipo?: string
+};
+
+export interface etiquetas_id {
+    _id: ObjectId,
+    name: string,
+    nombre: string,
+    tipo?: string
 };

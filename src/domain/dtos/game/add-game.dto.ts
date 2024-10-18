@@ -1,23 +1,30 @@
 
-import { desarrolladora, editora, etiquetas, genero, plataformas, tiendas } from "../../interfaces";
+import { desarrolladora, editora, etiquetas, generos, plataformas, basicInterface, tiendas } from "../../../interfaces";
 
 export class AddGameDto{
     private constructor(
         public titulo: string,
+        public saga: string,
         public lanzamiento: string,
         public plataformas: plataformas[],
-        public generos: genero[],
+        public generos: generos[],
         public desarrolladoras: desarrolladora[],
         public editoras: editora[],
         public tiendas?: tiendas[],
+        public remakeOf?: basicInterface[],
+        public remasterOf?: basicInterface[],
+        public hasRemake?: basicInterface[],
+        public hasRemaster?: basicInterface[],
+        public mecanicas?: [],
         public etiquetas?: etiquetas[],
         public backgroundImage?: string,
+        public spinOff?: boolean,
     ){}
 
 
     static create ( object: {[key:string]: any} ): [string?, AddGameDto?]{
 
-        const { titulo, lanzamiento, plataformas, generos, desarrolladoras, editoras, tiendas, etiquetas, backgroundImage} = object;
+        const { titulo, remakeOf, remasterOf, hasRemake, hasRemaster, saga, lanzamiento, plataformas, generos, mecanicas, desarrolladoras, editoras, tiendas, etiquetas, backgroundImage, spinOff} = object;
         console.log(object);
         if ( !titulo ) return ['Missing Titulo'];
         if ( !lanzamiento ) return ['Missing Lanzamiento'];
@@ -28,7 +35,7 @@ export class AddGameDto{
 
         return [
             undefined,
-            new AddGameDto( titulo, lanzamiento, plataformas, generos, desarrolladoras, editoras, tiendas, etiquetas, backgroundImage )
+            new AddGameDto( titulo, saga, lanzamiento, plataformas, generos, desarrolladoras, editoras, tiendas, remakeOf, remasterOf, hasRemake, hasRemaster, mecanicas, etiquetas, backgroundImage, spinOff )
         ]
     }
 

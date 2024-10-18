@@ -1,6 +1,6 @@
-import { AddGameDto } from "../dtos/add-game.dto";
-import { ComprobeGameDto } from "../dtos/comprobe-game.dto";
-import { GameRepository } from "../repositories/game.repository";
+
+import { ComprobeGameDto } from "../../dtos/game/comprobe-game.dto";
+import { GameRepository } from "../../repositories/game.repository";
 
 
 export class ComprobeGame {

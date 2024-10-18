@@ -9,7 +9,6 @@ export class GetGenreDto{
     static query ( object: {[key:string]: any} ): [string?, GetGenreDto?]{
 
         const { name } = object;
-        console.log(`El nombre recibido ${name}`);
         if ( !name ) return ['Missing Nombre'];
 
         return [
