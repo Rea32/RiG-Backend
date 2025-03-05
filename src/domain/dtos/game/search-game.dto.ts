@@ -7,7 +7,7 @@ export class SearchGameDto{
     static query ( object: {[key:string]: any} ): [string?, SearchGameDto?]{
 
         const { titulo } = object;
-        console.log(object);
+        // console.log(object);
         if ( !titulo ) return ['Missing Titulo'];
         return [
             undefined,

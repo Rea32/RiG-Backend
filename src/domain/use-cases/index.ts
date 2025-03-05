@@ -11,5 +11,6 @@ export * from './search-saga-by-name.use-case';
 export * from './search-game-by-genre.use-case';
 export * from './search-similar-games.use-case';
 export * from './update-game.use-case';
+export * from './update-genre.use-case';
 export * from './update-remasterAndRemake.use-case';
 export * from './update-saga.use-case';

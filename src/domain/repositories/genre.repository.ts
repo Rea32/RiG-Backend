@@ -1,6 +1,6 @@
 
 import { Types } from "mongoose";
-import { AddGenreDto, ComprobeGenreDto, GetAllDto, GetGenreDto } from "../dtos";
+import { AddGenreDto, ComprobeGenreDto, GetAllDto, GetGenreDto, UpdateGenreDto } from "../dtos";
 import { GenreEntity } from "../enitities/genre.entity";
 import { PaginatedResult } from "../../interfaces/paginatedResults.interface";
 
@@ -14,4 +14,6 @@ export abstract class GenreRepository{
     abstract getGenre( getGenreDto: GetGenreDto ): Promise<GenreEntity>
 
     abstract getAllGenre( getAllDto:GetAllDto ): Promise<PaginatedResult<GenreEntity>>
+
+    abstract updateGenre ( updateGenreDto: UpdateGenreDto ): Promise<GenreEntity>
 }

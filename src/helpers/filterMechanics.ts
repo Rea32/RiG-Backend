@@ -11,6 +11,7 @@ const mecanicas = [
     { _id:'66b600129957972041eb127a', nombre: 'Combate por Turnos', name: 'Turn-Based Combat' },
     { _id:'66b603539957972041eb1301', nombre: 'Mundo Abierto', name: 'Open World' },
     { _id:'66fbd80f0dde202693404bb1', nombre: 'Point & Click', name: 'Point & Click' },
+    { _id: '666fdfccb9897ad28fd15805', nombre: 'Conducción', name: 'Conducción' },
 ];
 
 export const filterMechanics = async (tags: Array<TagEntity>) => {
@@ -26,8 +27,8 @@ export const filterMechanics = async (tags: Array<TagEntity>) => {
         const filteredMechanics = mecanicas.filter(mechanic => 
             mecanicas.some(dbMechanic => dbMechanic.nombre === mechanic.nombre)
         );
-        console.log('FilteredMechanics: ', filteredMechanics);
-        console.log(tags);
+        // console.log('FilteredMechanics: ', filteredMechanics);
+        // console.log(tags);
         // Si no hay etiquetas, devuelve las mecánicas encontradas
         if (!tags || tags.length === 0) return [];
 

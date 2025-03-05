@@ -9,10 +9,13 @@ const platformSchema = new Schema({
         type: String,
         required:[ true, "El nombre es necesario"]
     },
+    abreviacion:{
+        type: String,
+    },
     slug:{
         type: String,
     },
-    año_lanzamiento:{
+    generacion:{
         type: Number,
     }
 

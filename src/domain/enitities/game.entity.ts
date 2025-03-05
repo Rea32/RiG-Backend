@@ -23,7 +23,8 @@ export class GameEntity {
         public hasRemaster?: [],
         public dlcs?: [],
         public isDlcOf?: [],
-        public backgroundImage? :string,
+        public coverImage? :string,
+        public screenshotsImages? :[url:string],
         public tiendas?: tiendas[],
     ){}
 }

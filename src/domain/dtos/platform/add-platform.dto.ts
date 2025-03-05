@@ -3,8 +3,9 @@ export class AddPlatformDto{
     private constructor(
         public id: number,
         public nombre: string,
-        public año_lanzamiento: number,
+        public generacion: number,
         public slug?: string,
+        public abreviacion?: string,
     )
     {
         this.slug = this.nombre.toLowerCase().replace(' ','-')
@@ -12,13 +13,13 @@ export class AddPlatformDto{
 
     static create ( object: {[key:string]: any} ): [string?, AddPlatformDto?]{
 
-        const { id, nombre, año_lanzamiento, slug } = object;
+        const { id, nombre, generacion, slug, abreviacion } = object;
         if ( !id ) return ['Missing id'];
         if ( !nombre ) return ['Missing nombre'];
-        if ( !año_lanzamiento ) return ['Missing año_lanzamiento'];
+        if ( !generacion ) return ['Missing generacion'];
         return [
             undefined,
-            new AddPlatformDto ( id, nombre, año_lanzamiento, slug )
+            new AddPlatformDto ( id, nombre, generacion, slug, abreviacion )
         ]
         
     }

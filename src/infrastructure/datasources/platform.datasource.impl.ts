@@ -15,7 +15,7 @@ const emptyPlatformEntity = {
 export class PlatformDatasourceImpl implements PlatformDatasource {
     
     async addPlatform(addPlatformDto: AddPlatformDto): Promise<PlatformEntity> {
-        const { id, nombre, año_lanzamiento, slug } = addPlatformDto
+        const { id, nombre, generacion, slug, abreviacion } = addPlatformDto
         try {
             const exist = await PlatformModel.findOne( { $or: [{ id }, { nombre }] });
             if ( exist ) throw CustomError.badRequest('La plataforma ya existe');
@@ -24,7 +24,8 @@ export class PlatformDatasourceImpl implements PlatformDatasource {
                 id: id,
                 name: nombre,
                 slug: slug,
-                año_lanzamiento: año_lanzamiento
+                generacion: generacion,
+                abreviacion: abreviacion
             });
 
             return PlatformMapper.platformEntityFromObject( plataforma );

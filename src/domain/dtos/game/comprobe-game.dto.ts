@@ -1,17 +1,17 @@
 export class ComprobeGameDto{
     private constructor(
-        public titulo: string,
+        public _id: string,
     ){}
 
 
     static query ( object: {[key:string]: any} ): [string?, ComprobeGameDto?]{
 
-        const { titulo } = object;
-        console.log(object);
-        if ( !titulo ) return ['Missing Titulo'];
+        const { _id } = object;
+        // console.log(object);
+        if ( !_id ) return ['Missing Id'];
         return [
             undefined,
-            new ComprobeGameDto( titulo )
+            new ComprobeGameDto( _id )
         ]
     }
 

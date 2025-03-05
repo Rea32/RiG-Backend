@@ -8,7 +8,7 @@ export class ComprobeBasicDto{
     static query ( object: {[key:string]: any} ): [string?, ComprobeBasicDto?]{
 
         const { id, nombre } = object;
-        console.log(object);
+        // console.log(object);
         if ( !id ) return ['Missing Id'];
         if ( !nombre ) return ['Missing Nombre'];
         return [

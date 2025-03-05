@@ -14,7 +14,7 @@ export class SearchByName {
             const nombres = await model.find({ nombre: { $regex: nombre, $options: 'i' } })
 
             if ( nombres.length == 0 ) throw CustomError.badRequest('El nombre que has buscado no existe');
-            console.log(nombres);
+            // console.log(nombres);
 
             return nombres;
 

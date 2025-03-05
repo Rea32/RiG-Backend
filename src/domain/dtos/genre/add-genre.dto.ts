@@ -17,7 +17,7 @@ export class AddGenreDto{
     static create ( object: {[key:string]: any} ): [string?, AddGenreDto?]{
 
         const { id, name, parent, importants_games, slug, description, sub_genre, image_background } = object;
-        console.log(object.parent);
+        // console.log(object.parent);
         if ( !id ) return ['Missing Id'];
         if ( !name ) return ['Missing name'];
         if ( parent === undefined ) return ['Missing Parent'];

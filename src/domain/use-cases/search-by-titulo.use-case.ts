@@ -12,7 +12,7 @@ export class SearchByTitulo {
         const { titulo } = searchByTituloDto;
 
         try {
-            console.log(typeof(model.modelName));
+            // console.log(typeof(model.modelName));
             let titulos = []
             if (model.modelName == 'Game') {
                 titulos = await model.find({ titulo: { $regex: titulo, $options: 'i' } })
@@ -27,7 +27,7 @@ export class SearchByTitulo {
             
             else {titulos = await model.find({ titulo: { $regex: titulo, $options: 'i' } })}
             if ( titulos.length == 0 ) throw CustomError.badRequest('El titulo que has buscado no existe');
-            console.log(titulos);
+            // console.log(titulos);
 
             return titulos;
 

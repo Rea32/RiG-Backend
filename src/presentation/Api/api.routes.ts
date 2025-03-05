@@ -17,6 +17,9 @@ import { DeveloperController } from "./developerController";
 import { MecanicaController } from "./mecanicaController";
 import { SagaController } from "./sagaController";
 import { CombineController } from "./combineController";
+import { IgdbController } from "./igdbController";
+import { HltbController } from "./hltbController";
+import { TensorController } from "./tensorController";
 
 
 
@@ -45,7 +48,11 @@ export class ApiRoutes{
         const developerController = new DeveloperController();
         const sagaController = new SagaController();
         const combineController = new CombineController();
+        const igdbController = new IgdbController();
+        const hltbController = new HltbController();
+        const tensorController = new TensorController();
         
+  
         
         // ADD
         router.post('/save', gameController.addGame);
@@ -56,6 +63,11 @@ export class ApiRoutes{
         router.post('/addTag', tagController.addTag);
         router.post('/addSaga', sagaController.addSaga);
         router.post('/addDeveloper', developerController.addDeveloper);
+        router.post('/searchIgdb', igdbController.searchGameIgdb);
+        router.post('/searchIgdbById', igdbController.searchGameIgdbByID);
+        router.post('/searchHltb', hltbController.searchGameHltb);
+        router.post('/searchEldenRing', hltbController.searchEldenRing);
+        router.post('/searchCompaniesIgdb', igdbController.searchCompaniesIgdb);
 
         // COMPROBE
         router.get('/existGame', gameController.comprobeGame);
@@ -107,10 +119,13 @@ export class ApiRoutes{
         
         // PUT
         router.put('/updateGame/:id', gameController.updateGame);
+        router.put('/updateGenre', genreController.updateGenre);
         router.put('/updateRemasterAndRemake', gameController.updateReamkeAndRemaster);
         router.put('/updateSaga/:id', sagaController.updateSaga);
         router.put('/updateGameAndSaga', combineController.updateGameAndSaga);
 
+        //TENSOR
+        router.post('/trainModel', tensorController.trainModel);
         return router;
     }
 }

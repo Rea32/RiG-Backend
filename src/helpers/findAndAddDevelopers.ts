@@ -19,7 +19,7 @@ export const findAndAddDevelopers = async (game: GameEntity) => {
         const newCompleteDevelopers = await Promise.all(newCompleteDevelopersPromises);
 
         const dbResp = await DeveloperModel.insertMany(newCompleteDevelopers);
-        console.log(dbResp)
+        // console.log(dbResp)
         console.log("Nuevas desarrolladoras agregadas")
     } catch (error) {
         console.log(error)

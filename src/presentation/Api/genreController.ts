@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { CustomError, GenreRepository } from "../../domain";
 import { GenreModel } from "../../data/mongodb/models/genre.model";
-import { AddGenreDto, ComprobeGenreDto, GetAllDto, GetGenreDto } from "../../domain/dtos";
-import { AddGenre, ComprobeGenre, Get, GetAllGenre, GetGenre } from "../../domain/use-cases";
+import { AddGenreDto, ComprobeGenreDto, GetAllDto, GetGenreDto, UpdateGenreDto } from "../../domain/dtos";
+import { AddGenre, ComprobeGenre, Get, GetAllGenre, GetGenre, UpdateGenre } from "../../domain/use-cases";
 
 
 export class GenreController{
@@ -69,5 +69,16 @@ export class GenreController{
         .then (genre=>res.json(genre))
         .catch( error => this.handleError( error, res ));
         
+    }
+
+    updateGenre = (req: Request, res: Response) => {
+
+        const [error, updateGenreDto] = UpdateGenreDto.query(req.body)
+        if (error) return res.status(400).json({ error });
+
+        new UpdateGenre(this.genreRepository)
+            .execute(updateGenreDto!)
+            .then(( updateGenre ) => (res.json(updateGenre)))
+            .catch(error => this.handleError(error, res))
     }
 }

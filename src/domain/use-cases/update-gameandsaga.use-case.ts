@@ -22,7 +22,7 @@ export class UpdateGameAndSaga {
         let updatedGameAndSaga = {}
         try {
             const { juegos_principales: old_juegos_principales, spin_offs: old_spin_offs } = await SagaModel.findById(_idSaga, 'juegos_principales spin_offs');
-            console.log(old_juegos_principales, old_spin_offs)
+            // console.log(old_juegos_principales, old_spin_offs)
             const updatedSaga = await SagaModel.findByIdAndUpdate(_idSaga, sagaInfo, { new: true });
 
 
@@ -54,7 +54,7 @@ export class UpdateGameAndSaga {
                 ...updatedGameAndSaga,
                 saga: updatedSaga
             };
-            console.log("Termina saga")
+            // console.log("Termina saga")
         } catch (error) {
             console.log(error);
             if (error instanceof CustomError) {
@@ -65,12 +65,11 @@ export class UpdateGameAndSaga {
 
 
         try {
-            console.log("Empieza Game", gameInfo)
+            // console.log("Empieza Game", gameInfo)
             const updatedGame = await GameModel.findByIdAndUpdate(new ObjectId(_idGame), {gameInfo}, { new: true });
-            console.log("Resultado llamamda BD: ", updatedGame);
+            // console.log("Resultado llamamda BD: ", updatedGame);
             if (!updatedGame) throw CustomError.badRequest('El juego no se ha actualizado');
 
-            console.log("Lo consigue!!!!!")
             updatedGameAndSaga = {
                 ...updatedGameAndSaga,
                 game: updatedGame

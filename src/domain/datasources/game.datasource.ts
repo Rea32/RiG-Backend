@@ -21,7 +21,7 @@ export abstract class GameDatasource{
 
     abstract getUpcomingGames (): Promise<Array<GameEntity>>
 
-    abstract getGame ( getGameDto: GetGameDto ): Promise<GameEntity>
+    abstract getGame ( getGameDto: GetGameDto ): Promise<any>
 
     abstract searchGame ( searchGameDto: SearchGameDto ): Promise<GameEntity>
 

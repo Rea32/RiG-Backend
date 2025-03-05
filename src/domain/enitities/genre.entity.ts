@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { references_games } from "../../interfaces";
 
 
 
@@ -10,7 +11,8 @@ export class GenreEntity {
         public slug?: string,
         public parent?: boolean,
         public games_count?: number,
-        public importants_games?: string[],
+        public importants_games?: references_games[],
+        public last_games?: references_games[],
         public sub_genres?: [Types.ObjectId],
         public description?: string,
 

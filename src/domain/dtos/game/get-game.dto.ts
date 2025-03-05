@@ -9,7 +9,7 @@ export class GetGameDto{
     static query ( object: {[key:string]: any} ): [string?, GetGameDto?]{
 
         const { _id } = object;
-        console.log(object);
+        // console.log(object);
         if ( !_id ) return ['Missing Id'];
         return [
             undefined,

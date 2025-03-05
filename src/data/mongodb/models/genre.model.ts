@@ -22,9 +22,14 @@ const genreSchema = new Schema({
     games_count:{
         type: Number,
     },
-    importants_games:{
-        type: Array,
-    },
+    importants_games: [{
+        type: Types.ObjectId,
+        ref: 'Game'
+    }],
+    last_games: [{
+        type: Types.ObjectId,
+        ref: 'Game'
+    }],
     sub_genres:[{
         type: Types.ObjectId,
         ref: 'Genero',

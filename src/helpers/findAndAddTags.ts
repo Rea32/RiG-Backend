@@ -11,7 +11,7 @@ export const findAndAddTags = async ( game:GameEntity ) =>{
         // console.log(`Sagas: ${sagas}`); 
         const newTags = game.etiquetas.filter((gameTag:any) => tags.some((tag:any) => tag.name === gameTag.name));
         if ( !newTags ) return;
-    console.log(newTags)
+    // console.log(newTags)
         const newCompleteTagsPromises = newTags.map( async (tag:any)=>{
 
             // const esTag = await translate(tag.name, { to: 'es' });

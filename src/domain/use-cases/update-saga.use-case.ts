@@ -17,7 +17,7 @@ export class UpdateSaga {
 
         try {
             const {juegos_principales: old_juegos_principales, spin_offs: old_spin_offs } = await SagaModel.findById(_id,'juegos_principales spin_offs');
-            console.log(old_juegos_principales, old_spin_offs)
+            // console.log(old_juegos_principales, old_spin_offs)
             const updatedSaga = await SagaModel.findByIdAndUpdate( _id, sagaInfo,{ new: true } );
    
 

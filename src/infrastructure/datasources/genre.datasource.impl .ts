@@ -2,7 +2,7 @@
 import { CustomError, GenreDatasource, GenreEntity } from "../../domain";
 import { GenreModel } from "../../data/mongodb/models/genre.model";
 import { GenreMapper } from "../mappers/genre.mapper";
-import { ComprobeGenreDto, GetAllDto, GetGenreDto } from "../../domain/dtos";
+import { ComprobeGenreDto, GetAllDto, GetGenreDto, UpdateGenreDto } from "../../domain/dtos";
 import { Types } from "mongoose";
 import { PaginatedResult } from "../../interfaces/paginatedResults.interface";
 
@@ -113,6 +113,25 @@ export class GenreDatasourceImpl implements GenreDatasource {
             throw CustomError.internalServer();
 
 
+        }
+    }
+
+    async updateGenre(updatedGenreDto: UpdateGenreDto): Promise<GenreEntity> {
+        
+
+        try {
+    
+            const updatedGenre = await GenreModel.findByIdAndUpdate(updatedGenreDto._id, updatedGenreDto, { new: true });
+
+            if (!updatedGenre) throw CustomError.badRequest('El genero no se ha actualizado')
+
+            return updatedGenre;
+        } catch (error) {
+            console.log(error);
+            if (error instanceof CustomError) {
+                throw error;
+            }
+            throw CustomError.internalServer();
         }
     }
 }

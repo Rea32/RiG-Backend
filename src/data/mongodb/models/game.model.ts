@@ -11,17 +11,6 @@ const plataformasSchema = new Schema({
         alias: 'nombre'
     },
 });
-// const sagaSchema = new Schema({
-//     _id: Types.ObjectId,
-//     id: Number,
-//     nombre: String,
-//     key_name: String,
-//     generos_principales: [],
-//     juegos_principales: [],
-//     spin_offs: [],
-//     backgroundImage: String,
-
-// });
 
 const gameSchema = new Schema({
 
@@ -34,7 +23,7 @@ const gameSchema = new Schema({
         ref: 'Saga'
     },
     lanzamiento: {
-        type: Date,
+        type: Date || String,
         required: [true, 'El lanzamiento es necesario']
     },
     plataformas: [{
@@ -65,8 +54,11 @@ const gameSchema = new Schema({
         type: [Types.ObjectId],
         ref: 'Tag'
     },
-    backgroundImage: {
+    coverImage: {
         type: String,
+    },
+    screenshotsImages: {
+        type: Array,
     },
     spinOff: {
         type: Boolean,
@@ -97,6 +89,47 @@ const gameSchema = new Schema({
         type: Types.ObjectId,
         ref: 'Mecanicas',
     }]
-})
+});
+// Método para obtener juegos similares basados en géneros o mecánicas
+gameSchema.methods.getSimilarGames = async function () {
+    try {
+        // Paso 1: Juegos que cumplen todos los valores de los tres atributos
+        const nivel1 = await mongoose.model('Game').find({
+            _id: { $ne: this._id }, // Excluimos el juego actual
+            $and: [
+                { generos: { $all: this.generos } },
+                { mecanicas: { $all: this.mecanicas } },
+                { etiquetas: { $all: this.etiquetas } },
+            ],
+        });
+
+        // Paso 2: Juegos que cumplen todas las mecánicas y algunas etiquetas
+        const nivel2 = await mongoose.model('Game').find({
+            $and: [
+                { mecanicas: { $all: this.mecanicas } },
+                { etiquetas: { $in: this.etiquetas } },
+            ],
+            generos: { $in: this.generos },
+        }).exec();
+
+        // Paso 3: Juegos que cumplen algunos valores de cada categoría
+        const nivel3 = await mongoose.model('Game').find({
+            $or: [
+                { generos: { $in: this.generos } },
+                { mecanicas: { $in: this.mecanicas } },
+                { etiquetas: { $in: this.etiquetas } },
+            ],
+        }).exec();
+
+        // Combinar y devolver los resultados
+        const similarGames = [...nivel1, ...nivel2, ...nivel3];
+
+        return similarGames;
+    } catch (error) {
+        console.error('Error al buscar juegos:', error);
+        throw error;
+    }
+
+};
 
 export const GameModel = mongoose.model('Game', gameSchema);

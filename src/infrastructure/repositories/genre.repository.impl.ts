@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { GenreDatasource, GenreEntity, GenreRepository } from "../../domain";
-import { AddGenreDto, ComprobeGenreDto, GetAllDto, GetGenreDto } from "../../domain/dtos";
+import { AddGenreDto, ComprobeGenreDto, GetAllDto, GetGenreDto, UpdateGenreDto } from "../../domain/dtos";
 import { PaginatedResult } from "../../interfaces/paginatedResults.interface";
 
 
@@ -24,5 +24,9 @@ export class GenreRepositoryImpl implements GenreRepository{
 
     getAllGenre( getAllDto:GetAllDto ): Promise<PaginatedResult<GenreEntity>> {
         return this.genreDatasource.getAllGenre( getAllDto );
+    }
+
+    updateGenre( updateGenreDto: UpdateGenreDto ): Promise<GenreEntity> {
+        return this.genreDatasource.updateGenre( updateGenreDto );
     }
 }

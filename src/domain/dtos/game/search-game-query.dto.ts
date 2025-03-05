@@ -18,7 +18,7 @@ export class SearchGameQueryDto{
         const { titulo, generos, mecanicas, plataformas} = object;
         let { page, limit } = object;
    
-        console.log(object);
+        // console.log(object);
         // if ( !titulo ) return ['Missing Titulo'];
         return [
             undefined,

@@ -9,7 +9,7 @@ export class ComprobePlatformDto{
     static query ( object: {[key:string]: any} ): [string?, ComprobePlatformDto?]{
 
         const { id } = object;
-        console.log(object);
+        // console.log(object);
         if ( !id ) return ['Missing Id'];
         return [
             undefined,

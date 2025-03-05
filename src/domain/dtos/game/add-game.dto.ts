@@ -17,15 +17,16 @@ export class AddGameDto{
         public hasRemaster?: basicInterface[],
         public mecanicas?: [],
         public etiquetas?: etiquetas[],
-        public backgroundImage?: string,
+        public coverImage?: string,
+        public screenshotsImages?: [{url:string}],
         public spinOff?: boolean,
     ){}
 
 
     static create ( object: {[key:string]: any} ): [string?, AddGameDto?]{
 
-        const { titulo, remakeOf, remasterOf, hasRemake, hasRemaster, saga, lanzamiento, plataformas, generos, mecanicas, desarrolladoras, editoras, tiendas, etiquetas, backgroundImage, spinOff} = object;
-        console.log(object);
+        const { titulo, remakeOf, remasterOf, hasRemake, hasRemaster, saga, lanzamiento, plataformas, generos, mecanicas, desarrolladoras, editoras, tiendas, etiquetas, coverImage, screenshotsImages, spinOff} = object;
+        // console.log(object);
         if ( !titulo ) return ['Missing Titulo'];
         if ( !lanzamiento ) return ['Missing Lanzamiento'];
         if ( !plataformas ) return ['Missing Plataformas'];
@@ -35,7 +36,25 @@ export class AddGameDto{
 
         return [
             undefined,
-            new AddGameDto( titulo, saga, lanzamiento, plataformas, generos, desarrolladoras, editoras, tiendas, remakeOf, remasterOf, hasRemake, hasRemaster, mecanicas, etiquetas, backgroundImage, spinOff )
+            new AddGameDto( 
+                titulo, 
+                saga, 
+                lanzamiento, 
+                plataformas,
+                generos, 
+                desarrolladoras, 
+                editoras, 
+                tiendas, 
+                remakeOf, 
+                remasterOf, 
+                hasRemake, 
+                hasRemaster, 
+                mecanicas, 
+                etiquetas, 
+                coverImage, 
+                screenshotsImages,
+                spinOff 
+            )
         ]
     }
 

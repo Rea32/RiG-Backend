@@ -30,24 +30,26 @@ export class GameDatasourceImpl implements GameDatasource {
             editoras,
             tiendas,
             etiquetas,
-            backgroundImage,
+            coverImage,
+            screenshotsImages,
+            saga,
             spinOff
         } = addGameDto;
 
         try {
-            console.log('GameDTO: ', addGameDto)
+            // console.log('GameDTO: ', addGameDto)
             const exist = await GameModel.findOne({ titulo: { $regex: new RegExp(`^${titulo}$`, 'i') } });
             if (exist) throw CustomError.badRequest('El titulo del juego ya existe');
             let tags = etiquetas;
             if (etiquetas) {
                 tags = await filterTags(etiquetas)
-                console.log('Tags: ', tags)
+                // console.log('Tags: ', tags)
             }
             let mechanics: any = mecanicas;
             if (etiquetas) {
 
                 mechanics = await filterMechanics(etiquetas);
-                console.log('MECANICAS AQUI: ', mechanics);
+                // console.log('MECANICAS AQUI: ', mechanics);
 
             }
             const game = await GameModel.create({
@@ -65,7 +67,9 @@ export class GameDatasourceImpl implements GameDatasource {
                 editoras: editoras,
                 tiendas: tiendas,
                 etiquetas: tags,
-                backgroundImage: backgroundImage
+                coverImage: coverImage,
+                screenshotsImages: screenshotsImages,
+                saga: saga
             });
             // Actualización de los juegos referenciados en `remakeOf` y `remasterOf`
 
@@ -86,10 +90,10 @@ export class GameDatasourceImpl implements GameDatasource {
 
     async comprobeGame(comprobeGameDto: ComprobeGameDto): Promise<Boolean> {
 
-        const { titulo } = comprobeGameDto;
+        const { _id } = comprobeGameDto;
 
         try {
-            const exist = await GameModel.findOne({ titulo: { $regex: `^${titulo}$`, $options: 'i' } });
+            const exist = await GameModel.findOne({ _id: _id } );
             if (!exist) return false;
             return true;
         } catch (error) {
@@ -180,35 +184,51 @@ export class GameDatasourceImpl implements GameDatasource {
     async getFiveLastGames(): Promise<Array<GameEntity>> {
 
         try {
-            const currentDate = new Date(); // Obtener la fecha actual
-
+            const currentDate = new Date(); // Fecha actual
             const games = await GameModel.find({
                 lanzamiento: { $lte: currentDate }
             })
                 .sort({ lanzamiento: -1 }) // Ordenar por fecha de lanzamiento descendente
-                .limit(5) // Limitar el resultado a 5 juegos
+                .limit(5) // Limitar a 5 juegos
                 .populate('saga')
                 .populate('plataformas')
                 .populate('generos', 'name')
                 .populate('mecanicas', 'nombre')
                 .populate('etiquetas', 'nombre')
                 .populate('desarrolladoras', 'nombre')
-                .populate('editoras', 'nombre')
+                .populate('editoras', 'nombre');
 
+            if (!games || games.length === 0) {
+                throw CustomError.badRequest('No existe ningún juego');
+            }
 
-            if (!games) throw CustomError.badRequest('No existe ningun juego');
+            // Agregar similarGames dinámicamente
+            const enrichedGames = await Promise.all(
+                games.map(async (game:any) => {
+                    const similarGames = await GameModel.find({
+                        $or: [
+                            { generos: { $in: game.generos } },
+                            { mecanicas: { $in: game.mecanicas } }
+                        ],
+                        _id: { $ne: game._id }
+                    })
+                        .limit(3) // Opcional, limitar resultados
+                        .populate('plataformas generos mecanicas etiquetas desarrolladoras editoras');
 
+                    // Convertir a objeto plano y agregar el atributo
+                    const gameObject = game.toObject();
+                    gameObject.similarGames = similarGames;
+                    return gameObject;
+                })
+            );
 
-
-            return games
-
+            return enrichedGames;
         } catch (error) {
-            console.log(error);
+            console.error(error);
             if (error instanceof CustomError) {
                 throw error;
             }
             throw CustomError.internalServer();
-
         }
     }
 
@@ -232,6 +252,8 @@ export class GameDatasourceImpl implements GameDatasource {
                 .populate('generos', 'name')
                 .populate('desarrolladoras', 'nombre')
                 .populate('editoras', 'nombre')
+                .populate('mecanicas', 'nombre')
+                .populate('etiquetas', 'nombre')
 
 
             if (!games || games.length === 0) throw CustomError.badRequest('No existen juegos lanzados en este día');
@@ -263,6 +285,8 @@ export class GameDatasourceImpl implements GameDatasource {
                 .populate('saga')
                 .populate('plataformas')
                 .populate('generos', 'name')
+                .populate('mecanicas', 'nombre')
+                .populate('etiquetas', 'nombre')
                 .populate('desarrolladoras', 'nombre')
                 .populate('editoras', 'nombre')
 
@@ -281,11 +305,11 @@ export class GameDatasourceImpl implements GameDatasource {
         }
     }
 
-    async getGame(getGameDto: GetGameDto): Promise<GameEntity> {
+    async getGame(getGameDto: GetGameDto): Promise<any> {
         const { _id } = getGameDto;
 
         try {
-            const game = await GameModel.findById(_id)
+            const gameDoc = await GameModel.findById(_id)
                 .populate('saga')
                 .populate('plataformas')
                 .populate('generos', 'name')
@@ -296,12 +320,16 @@ export class GameDatasourceImpl implements GameDatasource {
                 .populate('remasterOf', 'titulo')
                 .populate('hasRemake', 'titulo')
                 .populate('hasRemaster', 'titulo')
-                .populate('editoras', 'nombre');
+                .populate('editoras', 'nombre')
+                .exec();
+                
 
 
-            if (!game) throw CustomError.badRequest('El juego no existe');
-
-            return game;
+            if (!gameDoc) throw CustomError.badRequest('El juego no existe');
+            const similarGames = await gameDoc.getSimilarGames();
+            const game = gameDoc.toObject();
+            game.similarGames = similarGames
+            return {game};
 
         } catch (error) {
             console.log(error);
@@ -323,6 +351,7 @@ export class GameDatasourceImpl implements GameDatasource {
                 .populate('generos', 'name')
                 .populate('etiquetas', 'nombre')
                 .populate('mecanicas', 'nombre')
+                .populate('hasRemake', 'titulo')
                 .populate('desarrolladoras', 'nombre')
                 .populate('editoras', 'nombre');
             
@@ -351,8 +380,8 @@ export class GameDatasourceImpl implements GameDatasource {
                 .populate('saga')
                 .populate('plataformas')
                 .populate('generos', 'name')
-                .populate('mecanicas', 'nombre')
-                .populate('etiquetas', 'nombre')
+                .populate('mecanicas')
+                .populate('etiquetas')
                 .populate('desarrolladoras', 'nombre')
                 .populate('editoras', 'nombre')
                 .skip(skip)
@@ -399,7 +428,7 @@ export class GameDatasourceImpl implements GameDatasource {
         // console.log({ _id, generos, mecanicas, plataformas, tags, page, limit })
         const query = buildSimilarGamesQuery({ _id, generos, mecanicas, plataformas, etiquetas });
         try {
-            console.log(query)
+            // console.log(query)
             const skip = (page - 1) * limit;
             let totalItems = await GameModel.countDocuments(query);
             

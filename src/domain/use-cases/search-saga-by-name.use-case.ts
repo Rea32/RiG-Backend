@@ -25,7 +25,7 @@ export class SearchSagaByName {
 
 
             if ( nombres.length == 0 ) throw CustomError.badRequest('El nombre de la saga que has buscado no existe');
-            console.log(nombres);
+            // console.log(nombres);
 
             return nombres;
 
